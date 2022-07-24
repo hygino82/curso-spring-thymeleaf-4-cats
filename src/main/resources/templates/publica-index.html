@@ -8,13 +8,13 @@
     <script th:src="@{/jquery-3.6.0.min/jquery-3.6.0.min.js}"></script>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col">
-        <h2 th:text="${msnBemVindo}"></h2>
-           <a class="btn btn-primary" href="/usuario/novo">Novo Usuário</a>
+    <div th:replace="fragments/publica-nav :: nav"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2 th:text="${msnBemVindo}"></h2>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>
