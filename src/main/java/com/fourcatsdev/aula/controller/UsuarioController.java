@@ -16,6 +16,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioController {
+	
     @Autowired
     private UsuarioRepository repository;
 
@@ -35,4 +36,10 @@ public class UsuarioController {
         attributes.addFlashAttribute("mensagem", "Usuário salvo com sucesso!");
         return "redirect:/usuario/novo";
     }
+    
+    @RequestMapping("/admin/listar")
+	public String listarUsuario(Model model) {
+		model.addAttribute("usuarios", repository.findAll());		
+		return "/auth/admin/admin-listar-usuario";		
+	}
 }
