@@ -2,11 +2,11 @@ package com.fourcatsdev.aula.controller;
 
 import com.fourcatsdev.aula.model.Usuario;
 import com.fourcatsdev.aula.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -17,8 +17,12 @@ import javax.validation.Valid;
 @RequestMapping("/usuario")
 public class UsuarioController {
 	
-    @Autowired
-    private UsuarioRepository repository;
+
+    private final UsuarioRepository repository;
+
+    public UsuarioController(UsuarioRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping("/novo")
     public String adicionarUsuario(Model model) {
@@ -42,4 +46,12 @@ public class UsuarioController {
 		model.addAttribute("usuarios", repository.findAll());		
 		return "/auth/admin/admin-listar-usuario";		
 	}
+
+    @GetMapping("/admin/apagar/{id}")
+    public String deleteUser(@PathVariable("id") long id, Model model) {
+        Usuario usuario = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Id inválido:" + id));
+        repository.delete(usuario);
+        return "redirect:/usuario/admin/listar";
+    }
 }
