@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -17,9 +18,9 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     @NotNull
     @Size(min = 3, message = "O nome deve ter no mínimo 3 caracteres")
-
     private String nome;
 
     @CPF
@@ -36,10 +37,18 @@ public class Usuario {
     @NotEmpty
     @Size(min = 3, message = "O nome deve ter no mínimo 3 caracteres")
     private String password;
+    
     @NotEmpty(message = "O login deve ser informado")
     @Size(min = 4, message = "O login deve ter no mínimo 4 caracteres")
     private String login;
+    
     private boolean ativo;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "usuario_papel",
+			   joinColumns = @JoinColumn(name = "usuario_id"),
+			   inverseJoinColumns = @JoinColumn(name = "papel_id"))
+    private List<Papel> papeis;
 
     public Usuario() {
     }
@@ -107,4 +116,8 @@ public class Usuario {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
+
+	public List<Papel> getPapeis() {
+		return papeis;
+	}
 }
